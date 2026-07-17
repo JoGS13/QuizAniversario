@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre sellado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1: #F5F3FF;
+    --bg-2: #EDE9FE;
+    --ink: #201B3D;
+    --ink-soft: #514C73;
+    --muted: #9A96B8;
+    --card: #FFFFFF;
+    --accent: #6A4CFF;
+    --accent-dark: #5637E0;
+    --accent-soft: #EFEAFF;
+    --coral: #FF8A5B;
+    --success: #22C55E;
+    --success-soft: #E9FBF0;
+    --error: #FF5C5C;
+    --error-soft: #FFEFEF;
+    --shadow: 0 20px 60px -20px rgba(90, 70, 200, 0.35);
+    --radius: 28px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--bg-1);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .display{
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .blob{
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.55;
+    z-index: 0;
+    pointer-events: none;
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .blob-a{
+    width: 420px; height: 420px;
+    background: radial-gradient(circle at 30% 30%, #C7B8FF, transparent 70%);
+    top: -120px; left: -120px;
+  }
+  .blob-b{
+    width: 380px; height: 380px;
+    background: radial-gradient(circle at 60% 60%, #FFD3B8, transparent 70%);
+    bottom: -140px; right: -100px;
+    animation-delay: 3s;
+  }
+  .blob-c{
+    width: 300px; height: 300px;
+    background: radial-gradient(circle at 50% 50%, #B8E3FF, transparent 70%);
+    top: 40%; right: 10%;
+    animation-delay: 6s;
+    opacity: 0.35;
+  }
+  @keyframes drift{
+    from{ transform: translate(0,0) scale(1); }
+    to{ transform: translate(30px,-20px) scale(1.08); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .blob{ animation: none; }
+    *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+
+  .stage{
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  .card{
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 44px 36px 38px;
+    text-align: center;
+    animation: card-in 0.55s cubic-bezier(.2,.9,.25,1);
+  }
+
+  @keyframes card-in{
+    from{ opacity: 0; transform: translateY(18px) scale(0.97); }
+    to{ opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .card.shake{ animation: shake 0.5s; }
+  @keyframes shake{
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(3px); }
+    30%, 50%, 70% { transform: translateX(-7px); }
+    40%, 60% { transform: translateX(7px); }
+  }
+
+  .progress{
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 26px;
+  }
+  .progress span{
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--bg-2);
+    transition: all 0.4s ease;
+  }
+  .progress span.active{ width: 24px; background: var(--accent); }
+  .progress span.done{ background: var(--success); }
+
+  .badge{
+    width: 84px; height: 84px;
+    margin: 0 auto 22px;
+    border-radius: 26px;
+    background: linear-gradient(145deg, var(--accent-soft), #fff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 26px -10px rgba(106,76,255,0.45), inset 0 0 0 1px rgba(106,76,255,0.08);
+    animation: badge-pop 0.6s cubic-bezier(.2,1.1,.4,1);
+  }
+  @keyframes badge-pop{
+    0%{ transform: scale(0.6) rotate(-8deg); opacity: 0;}
+    100%{ transform: scale(1) rotate(0); opacity: 1;}
+  }
+  .badge svg{ width: 38px; height: 38px; }
+
+  .eyebrow{
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 8px;
+  }
+
+  h1.title{
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  p.subtitle{
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    margin: 0 0 28px;
+  }
+
+  .field{ text-align: left; margin-bottom: 16px; }
+  .field label{
+    display:block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 6px;
+  }
+  input[type="password"], input[type="text"]{
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 2px solid var(--bg-2);
+    background: #FBFAFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.25s, background 0.25s;
+  }
+  input:focus{ border-color: var(--accent); background: #fff; }
+  input.err{ border-color: var(--error); background: var(--error-soft); }
+  input.ok{ border-color: var(--success); background: var(--success-soft); }
+
+  button.primary{
+    width: 100%;
+    padding: 15px 18px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 10px 24px -8px rgba(86,55,224,0.55);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  button.primary:hover{ transform: translateY(-2px); box-shadow: 0 14px 30px -8px rgba(86,55,224,0.6); }
+  button.primary:active{ transform: translateY(0); }
+
+  .msg{
+    min-height: 20px;
+    font-size: 13.5px;
+    font-weight: 600;
+    margin-top: 14px;
+    transition: opacity 0.2s;
+  }
+  .msg.error{ color: var(--error); }
+  .msg.success{ color: var(--success); }
+
+  .hidden{ display: none !important; }
+
+  /* ---- quiz paso a paso ---- */
+  .quiz-progress{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .quiz-progress .track{
+    flex: 1;
+    height: 6px;
+    border-radius: 100px;
+    background: var(--bg-2);
+    overflow: hidden;
+  }
+  .quiz-progress .fill{
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--coral));
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .quiz-progress .count{
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .quiz-question{
+    font-size: 19px;
+    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    margin: 0 0 20px;
+    line-height: 1.35;
+    min-height: 52px;
+  }
+
+  /* final reveal */
+  .clue-box{
+    background: linear-gradient(135deg, var(--accent), #8A6BFF);
+    border-radius: 20px;
+    padding: 26px 20px;
+    margin: 22px 0 8px;
+    color: #fff;
+  }
+  .clue-label{
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin: 0 0 6px;
+    font-weight: 600;
+  }
+  .clue-value{
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0.005em;
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .confetti{
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: var(--radius);
+  }
+  .confetti span{
+    position: absolute;
+    top: -10px;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    opacity: 0.9;
+    animation: fall linear forwards;
+  }
+  @keyframes fall{
+    to{ transform: translateY(420px) rotate(360deg); opacity: 0; }
+  }
+
+  footer.hint{
+    margin-top: 22px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-a"></div>
+<div class="blob blob-b"></div>
+<div class="blob blob-c"></div>
+
+<div class="stage">
+
+  <!-- PANTALLA 1: CONTRASEÑA -->
+  <div class="card" id="screen-password">
+    <div class="progress">
+      <span class="active" id="dot1"></span>
+      <span id="dot2"></span>
+      <span id="dot3"></span>
+    </div>
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#6A4CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="4" y="10" width="16" height="10" rx="3"></rect>
+        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+        <circle cx="12" cy="15" r="1.6" fill="#6A4CFF" stroke="none"></circle>
+      </svg>
+    </div>
+    <p class="eyebrow">Acceso privado</p>
+    <h1 class="title">Este sobre está sellado</h1>
+    <p class="subtitle">Introduce la contraseña para abrirlo.</p>
+
+    <div class="field">
+      <label for="password-input">Contraseña</label>
+      <input type="password" id="password-input" placeholder="••••••" inputmode="numeric" autocomplete="off">
+    </div>
+    <button class="primary" id="btn-password">Entrar</button>
+    <p class="msg error hidden" id="msg-password">Contraseña incorrecta. Inténtalo de nuevo.</p>
+  </div>
+
+  <!-- PANTALLA 2: QUIZ PASO A PASO -->
+  <div class="card hidden" id="screen-quiz">
+    <div class="progress">
+      <span class="done" id="dot1b"></span>
+      <span class="active" id="dot2b"></span>
+      <span id="dot3b"></span>
+    </div>
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#6A4CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"></circle>
+        <path d="M9.2 9a2.8 2.8 0 1 1 3.9 2.6c-.9.5-1.4 1-1.4 2.1"></path>
+        <circle cx="12" cy="16.6" r="0.2" fill="#6A4CFF" stroke="none"></circle>
+      </svg>
+    </div>
+    <p class="eyebrow">¿Me conoces bien?</p>
+
+    <div class="quiz-progress">
+      <div class="track"><div class="fill" id="quiz-fill"></div></div>
+      <div class="count" id="quiz-count">1 / 16</div>
+    </div>
+
+    <p class="quiz-question" id="quiz-question"></p>
+
+    <div class="field">
+      <label for="quiz-input">Tu respuesta</label>
+      <input type="text" id="quiz-input" placeholder="Escribe aquí" autocomplete="off">
+    </div>
+
+    <button class="primary" id="btn-quiz">Comprobar</button>
+    <p class="msg error hidden" id="msg-quiz">Respuesta incorrecta. Inténtalo de nuevo.</p>
+  </div>
+
+  <!-- PANTALLA 3: PISTA -->
+  <div class="card hidden" id="screen-clue">
+    <div class="confetti" id="confetti"></div>
+    <div class="progress">
+      <span class="done" id="dot1c"></span>
+      <span class="done" id="dot2c"></span>
+      <span class="active" id="dot3c"></span>
+    </div>
+    <div class="badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#6A4CFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"></path>
+        <path d="M2 8h20v4H2z"></path>
+        <path d="M12 8v12"></path>
+        <path d="M12 8c-1.5-3-4.5-4-6-2.5S6 9 12 8Z"></path>
+        <path d="M12 8c1.5-3 4.5-4 6-2.5S18 9 12 8Z"></path>
+      </svg>
+    </div>
+    <p class="eyebrow">¡Correcto!</p>
+    <h1 class="title">El sobre está abierto</h1>
+    <div class="clue-box">
+      <p class="clue-label">Pista</p>
+      <p class="clue-value">¿Te acuerdas cuánta gente estaba el 31 de diciembre cenando contigo?</p>
+    </div>
+    <footer class="hint">Piénsalo bien, la respuesta es la siguiente pista.</footer>
+  </div>
+
+</div>
+
+<script>
+  const PASSWORD = "5121110";
+  const norm = (s) => s
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
+  const screenPassword = document.getElementById('screen-password');
+  const screenQuiz = document.getElementById('screen-quiz');
+  const screenClue = document.getElementById('screen-clue');
+
+  function shakeCard(card){
+    card.classList.remove('shake');
+    void card.offsetWidth;
+    card.classList.add('shake');
+  }
+
+  // --- PASO 1: contraseña ---
+  const passInput = document.getElementById('password-input');
+  const passMsg = document.getElementById('msg-password');
+
+  function checkPassword(){
+    if(passInput.value === PASSWORD){
+      screenPassword.classList.add('hidden');
+      screenQuiz.classList.remove('hidden');
+      renderQuestion();
+    } else {
+      passMsg.classList.remove('hidden');
+      passInput.classList.add('err');
+      shakeCard(screenPassword);
+      passInput.value = "";
+      passInput.focus();
+    }
+  }
+
+  document.getElementById('btn-password').addEventListener('click', checkPassword);
+  passInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') checkPassword();
+    passInput.classList.remove('err');
+  });
+
+  // --- PASO 2: quiz paso a paso ---
+  const QUESTIONS = [
+    { q: "Cual es nuestro dia?", a: "23" },
+    { q: "Cuantos años vamos a hacer?", a: "3" },
+    { q: "Cuantos paises hemos estado juntos este año?", a: "7" },
+    { q: "Cuando empezamos a salir, cual fue el restaurante de nuestra primera cita?", a: "kaikaya" },
+    { q: "Quien te regalo tus primeras flores?", a: "jose" },
+    { q: "Quien te ama con locura?", a: "jose" },
+    { q: "Cual es la pelicula favorita de tu novio?", a: "hacksaw ridge" },
+    { q: "Como quieres que se llame tu hija?", a: "gabriela" },
+    { q: "Quien viste mejor?", a: "blanca" },
+    { q: "Como quiere tu novio que se llame nuestro hijo?", a: "leo" },
+    { q: "Cual es el miedo mas grande de tu novio?", a: "morir" },
+    { q: "Como se llamaba la tortuga de tu novio?", a: "chancha" },
+    { q: "Cual es uno de los love languages de Jose que disfruta hacer contigo?", a: "comer" },
+    { q: "Quien es mas cariñoso?", a: "jose" },
+    { q: "Quien dio el primer beso?", a: "blanca" },
+    { q: "Es Jose feliz contigo?", a: "si" },
+    { q: "En que restaurante celebrasteis el primer aniversario?", a: "Begin" },
+    { q: "Que te dice Jose siempre antes de dormir?", a: "buenas noches princesita" },
+  ];
+
+  let currentQ = 0;
+
+  const quizQuestion = document.getElementById('quiz-question');
+  const quizInput = document.getElementById('quiz-input');
+  const quizMsg = document.getElementById('msg-quiz');
+  const quizFill = document.getElementById('quiz-fill');
+  const quizCount = document.getElementById('quiz-count');
+
+  function renderQuestion(){
+    const total = QUESTIONS.length;
+    quizQuestion.textContent = QUESTIONS[currentQ].q;
+    quizCount.textContent = (currentQ + 1) + " / " + total;
+    quizFill.style.width = ((currentQ) / total * 100) + "%";
+    quizInput.value = "";
+    quizInput.classList.remove('err', 'ok');
+    quizMsg.classList.add('hidden');
+    quizInput.focus();
+  }
+
+  function checkQuiz(){
+    const correct = norm(quizInput.value) === norm(QUESTIONS[currentQ].a);
+
+    if(correct){
+      quizInput.classList.remove('err');
+      quizInput.classList.add('ok');
+      quizMsg.classList.add('hidden');
+      currentQ++;
+
+      if(currentQ >= QUESTIONS.length){
+        quizFill.style.width = "100%";
+        setTimeout(() => {
+          screenQuiz.classList.add('hidden');
+          screenClue.classList.remove('hidden');
+          launchConfetti();
+        }, 350);
+      } else {
+        setTimeout(renderQuestion, 350);
+      }
+    } else {
+      quizMsg.classList.remove('hidden');
+      quizInput.classList.add('err');
+      shakeCard(screenQuiz);
+    }
+  }
+
+  document.getElementById('btn-quiz').addEventListener('click', checkQuiz);
+  quizInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') checkQuiz();
+    quizInput.classList.remove('err');
+  });
+
+  // --- confeti sencillo ---
+  function launchConfetti(){
+    const holder = document.getElementById('confetti');
+    const colors = ['#6A4CFF', '#FF8A5B', '#22C55E', '#B8E3FF', '#FFD3B8'];
+    for(let i = 0; i < 26; i++){
+      const piece = document.createElement('span');
+      piece.style.left = Math.random() * 100 + '%';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.animationDuration = (1.4 + Math.random() * 1.2) + 's';
+      piece.style.animationDelay = (Math.random() * 0.4) + 's';
+      holder.appendChild(piece);
+    }
+    setTimeout(() => holder.innerHTML = '', 3000);
+  }
+</script>
+
+</body>
+</html>
